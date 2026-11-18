@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    env:
+      ZIG_URL: https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
+      ZIG_SHA256: d45312e61ebcc48032b77bc4cf7fd6915c11fa16e4aad116b66c9468211230ea
+      EDK2_URL: https://github.com/tianocore/edk2/archive/refs/tags/edk2-stable202408.zip
+      EDK2_SHA256: 02668de8b74133c51802e303cd35e28c8075d3e9c9c3e71f52dd4bc3a45db95f
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Fetch pinned toolchain and headers
+        run: |
+          mkdir -p "$RUNNER_TEMP/deps" && cd "$RUNNER_TEMP/deps"
+          curl -fsSL -o zig.tar.xz "$ZIG_URL"
+          echo "$ZIG_SHA256  zig.tar.xz" | sha256sum -c -
+          tar -xJf zig.tar.xz
+          curl -fsSL -o edk2.zip "$EDK2_URL"
+          echo "$EDK2_SHA256  edk2.zip" | sha256sum -c -
+          unzip -q edk2.zip 'edk2-edk2-stable202408/MdePkg/Include/*'
+
+      - name: Rebuild and compare with committed binaries
+        run: >
+          uv run --no-project python build.py
+          --zig "$RUNNER_TEMP/deps/zig-linux-x86_64-0.13.0/zig"
+          --include "$RUNNER_TEMP/deps/edk2-edk2-stable202408/MdePkg/Include"
+
+      - name: Hashes and emulator tests
+        run: uv run --no-project --with unicorn==2.1.4 python test.py

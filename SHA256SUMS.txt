@@ -1,0 +1,3 @@
+6b05ad77db9c5e45e27eea6dac0bd82ac41c790ed072388e942826e09d897b20  tools/EcEnable/EcEnable.efi
+fd6ebc006a266fffb65c1e665cc53ada72136e2820de095f03b23065950835b5  tools/EcQuery/EcQuery.efi
+5b941531e6535dfbff684fccea8125fe13a5cc0f6cb9d74c5198548fc32cd6a5  tools/EcRead/EcRead.efi

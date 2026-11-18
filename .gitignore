@@ -1,0 +1,12 @@
+build/
+__pycache__/
+*.pyc
+.venv/
+emulation-results.json
+# Firmware and live dumps are never committed
+*.bin
+*.fd
+*.exe
+# macOS
+.DS_Store
+._*
