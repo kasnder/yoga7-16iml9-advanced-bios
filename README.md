@@ -63,7 +63,7 @@ Details and firmware offsets: [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md).
 | [`EcRead.efi`](tools/EcRead/) | Saves the EC's 1 KiB flag sector to the USB stick, to back it up or check it | Only writes the dump file. The EC pauses fans, charging and keyboard for a few seconds. |
 | [`EcQuery.efi`](tools/EcQuery/) | Shows the model, BIOS, `CrbItem` and the EC's answer to `0x41` | No |
 
-All three are unsigned x64 UEFI applications that run from a UEFI Shell. They do nothing until you press an uppercase key. Download them from this repository and check them against [SHA256SUMS.txt](SHA256SUMS.txt).
+All three are unsigned x64 UEFI applications that run from a UEFI Shell. They do nothing until you press an uppercase key. Download them from the [latest release](https://github.com/kasnder/yoga7-16iml9-advanced-bios/releases/latest) and check them against its `SHA256SUMS.txt`.
 
 ## Safety
 
