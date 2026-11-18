@@ -28,11 +28,11 @@ The full guide, with the expected output of every step, is in [docs/USAGE.md](do
 5. **Check.** Run `EcRead.efi` again. The new file should start with `CF`, followed by `FF`s.
 6. **Open Setup.** Type `reset`, then press F2 at the Lenovo logo. The Advanced and Power menus are now visible.
 
-To hide them again, run `EcEnable.efi` and press `D`, then `Y`.
+A reboot hides them again (see [Known issues](#known-issues)). To also remove the `CrbItem` variable, run `EcEnable.efi` and press `D`, then `Y`.
 
 ## Known issues
 
-- **The menus disappear after a reboot.** On the tested laptop they're visible on the first boot after enabling and gone after the next reboot. It isn't known yet which of the two conditions (below) is being reset. Running `EcEnable.efi` and pressing `S` after a reboot shows the state of both. If you can see what changes, please open an issue with that output.
+- **The menus disappear after a reboot.** They're visible on the first boot after enabling and hidden after the next reboot. `CrbItem` stays set, but the EC's gate reads `0x00` again. To show the menus again, run `EcEnable.efi` with `E` then `Y` before entering Setup. Each time, that makes the EC erase and rewrite its flag sector once, so use it when you need the menus rather than on every boot. See [After a reboot](docs/HOW-IT-WORKS.md#after-a-reboot).
 - **The disable path (`D`) is untested on hardware.** It has only been tested in the emulator.
 
 ## How it works

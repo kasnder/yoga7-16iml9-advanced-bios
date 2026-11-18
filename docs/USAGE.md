@@ -120,13 +120,15 @@ reset
 
 Press F2 at the Lenovo logo. The Advanced and Power menus should now be visible.
 
-They stay visible for this boot only: after the next reboot they are hidden again. To show them again, boot the shell, run `EcEnable.efi` and press `S` to see which condition changed. If `CrbItem` is absent and the gate still reports `0xEE`, `E` then `Y` sets the variable again without another EC flash write. See [HOW-IT-WORKS.md](HOW-IT-WORKS.md#after-a-reboot).
+They stay visible for this boot only. After the next reboot `CrbItem` is still set, but the EC's gate reads `0x00` again, so the menus are hidden. To show them again, boot the shell, run `EcEnable.efi` and press `E` then `Y`. It keeps the variable and sends `0x40` once, which rewrites the EC's flag sector, so do this when you need the menus rather than on every boot. See [HOW-IT-WORKS.md](HOW-IT-WORKS.md#after-a-reboot).
 
 - **Look first and change nothing,** then exit without saving.
 - **Later, change one setting at a time** and write down each change. Wrong CPU, memory or power settings can stop the laptop booting, and loading defaults isn't proven to recover it on this machine.
 - **Turn Secure Boot back on** (F2 → Security) once you no longer need the shell.
 
 ## Undo
+
+A reboot already hides the menus, because the EC's gate resets. Undoing removes the `CrbItem` variable as well and, if the gate is still enabled, disables it.
 
 Boot the shell again with Secure Boot off, then:
 
@@ -142,6 +144,8 @@ Sent EC command 0x42 once.
 EC query after: 0x00
 CrbItem deleted (restores the recorded original absence).
 ```
+
+If you have rebooted since enabling, the gate already reads `0x00`. `D` then prints `0x42 NOT sent` and only deletes `CrbItem`.
 
 Then run `EcRead.efi` and compare the new dump with your backup from step 4:
 

@@ -45,7 +45,16 @@ The tested laptop's sector didn't match the update image, so the EC had rewritte
 
 ## After a reboot
 
-On the tested laptop the menus are hidden again after a reboot. The EC's flag survives in flash, and the EC normally keeps running across a host reboot, so the variable is the more likely one to be reset. That isn't confirmed. `EcEnable.efi` `S` after a reboot shows both conditions. If only the variable is gone, `E` sets it again without another EC flash write: it skips `0x40` when the gate already reports `0xEE`. If the variable now holds another value, `E` refuses rather than overwrite it.
+On the tested laptop the menus are hidden again after a reboot. `CrbItem` keeps its value `0x16`, but the EC answers `0x41` with `0x00` again, so the EC side is reset. It isn't known yet what resets it. Two possibilities:
+
+- **Only the EC's RAM flag is cleared** at boot. The flag sector would then still hold `CF`.
+- **Something sends the equivalent of `0x42`** at boot, rewriting the sector to `00`.
+
+Running `EcRead.efi` after a reboot would tell the two apart. Either way the gate is effectively per boot.
+
+To show the menus again, run `E` then `Y`. With `CrbItem` already `0x16`, it leaves the variable alone and sends `0x40` once. Each `0x40` erases and rewrites the 1 KiB flag sector. Embedded flash tolerates only a limited number of erase cycles, and the endurance of this EC's flash isn't known, so re-enable when you need the menus rather than on every boot.
+
+After a reboot, `D` finds the gate already at `0x00`, so it sends no EC command and only deletes `CrbItem`.
 
 ## How the tools talk to the EC
 

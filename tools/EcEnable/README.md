@@ -19,7 +19,7 @@ Safeguards:
 
 An `0xEE` reply proves only the EC's RAM flag. Check the flash with `EcRead.efi` afterwards: expect `CF` followed by 1023 × `FF`.
 
-The menus stay visible for the next boot only; see [Known issues](../../README.md#known-issues). Disable has only been tested in the emulator.
+The EC gate resets on reboot while `CrbItem` stays set, so the menus show for one boot. Run `E` again to show them again; see [Known issues](../../README.md#known-issues). Disable has only been tested in the emulator.
 
 - Source: `EcEnable.c`, `MinimalRuntime.c`, `Target.inc`.
 - Tests: `emulate.py`, 32 scenarios. The EC model follows the traced handlers: RAM flag first, then a 1 KiB erase, then a one-byte write. The tests also model a skipped write, an EC that ignores the command and a stuck or silent EC.
