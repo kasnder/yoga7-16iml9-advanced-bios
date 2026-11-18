@@ -9,6 +9,16 @@ The disable path (`D`) has only been tested in the emulator so far.
 
 ## Before you start
 
+> [!CAUTION]
+> **Use at your own risk.** These tools write to your EC's flash and a UEFI variable, and the unlocked menus expose settings that can leave the laptop unbootable. Nobody can help you recover it, and there is no warranty.
+>
+> **Having a hardware flash programmer is recommended**, and you should know how to use it before you start:
+> - a **SPI flash programmer** (for example a CH341A with a SOIC-8 clip), to rewrite the BIOS chip if a setting stops the laptop booting;
+> - an **ITE EC programmer** (for example [I2C-Pico-USB-ITE-EC-prog](https://github.com/JohnDoe150489/I2C-Pico-USB-ITE-EC-prog)), in case the EC's own flash is ever damaged.
+>
+> Neither recovery route has been tried on this laptop. Back up the BIOS chip with the programmer before you change any setting.
+
+
 - **BitLocker:** have your Windows recovery key ready (aka.ms/myrecoverykey or your Microsoft account). Turning off Secure Boot can make Windows ask for it.
 - **Power:** charge the battery and keep the charger connected. The EC erases and rewrites its own flash during `E` and `D`.
 - **Time:** allow 15 minutes and don't interrupt the tools while they run.
@@ -175,7 +185,8 @@ Never run `E` or `D` repeatedly to "fix" a result. Each run erases and rewrites 
 ## If something goes wrong
 
 - **EC unresponsive** (no keyboard, fans stuck, no charging): shut down. Unplug the charger and hold the power button for 15–20 s, wait a minute, then start the laptop. If it still misbehaves, the internal battery has to be disconnected, which means opening the bottom cover.
-- **Laptop won't boot after a setting change:** this is outside what these tools can fix. Lenovo's own recovery options (BIOS reset, service) apply.
+- **Laptop won't boot after a setting change:** this is outside what these tools can fix. Try Lenovo's own recovery options first. Otherwise, restore your backup of the BIOS chip with a SPI flash programmer.
+- **EC flash damaged** (the EC no longer starts at all): only an external ITE EC programmer can rewrite it.
 
 ## What the tools never do
 

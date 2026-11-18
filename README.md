@@ -15,7 +15,16 @@ You need:
 - a USB stick you can format;
 - your BitLocker recovery key, if Windows uses BitLocker, because Secure Boot has to be off while you run the tools.
 
-Be aware that many of the unlocked settings can stop the laptop from booting, and loading defaults isn't guaranteed to fix that. Only change settings you understand, one at a time.
+Many of the unlocked settings can stop the laptop from booting, and loading defaults isn't guaranteed to fix that. Only change settings you understand, one at a time.
+
+> [!CAUTION]
+> **Use at your own risk.** These tools write to your EC's flash and a UEFI variable, and the unlocked menus expose settings that can leave the laptop unbootable. Nobody can help you recover it, and there is no warranty.
+>
+> **Having a hardware flash programmer is recommended**, and you should know how to use it before you start:
+> - a **SPI flash programmer** (for example a CH341A with a SOIC-8 clip), to rewrite the BIOS chip if a setting stops the laptop booting;
+> - an **ITE EC programmer** (for example [I2C-Pico-USB-ITE-EC-prog](https://github.com/JohnDoe150489/I2C-Pico-USB-ITE-EC-prog)), in case the EC's own flash is ever damaged.
+>
+> Neither recovery route has been tried on this laptop. Back up the BIOS chip with the programmer before you change any setting.
 
 ## Quick start
 
